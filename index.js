@@ -205,7 +205,7 @@ app.use(express.json());
 //
 // middlewares
 const verifyToken = (req, res, next) => {
-  console.log("inside verify token", req.headers.authorization);
+  // console.log("inside verify token", req.headers.authorization);
   if (!req.headers.authorization) {
     return res.status(401).send({ message: "unauthorized access" });
   }
@@ -250,7 +250,9 @@ async function run() {
       res.send({ token });
     });
 
-    // use verify admin after verifyToken
+    // ! use verify admin after verifyToken
+    // ----------------------------
+
     const verifyAdmin = async (req, res, next) => {
       const email = req.decoded.email;
       const query = { email: email };
@@ -268,6 +270,7 @@ async function run() {
       res.send(result);
     });
 
+    // !
     app.get("/users/admin/:email", verifyToken, async (req, res) => {
       const email = req.params.email;
 
@@ -366,11 +369,11 @@ async function run() {
 run().catch(console.dir);
 
 app.get("/", (req, res) => {
-  res.send("boss is sitting");
+  res.send("boss is running");
 });
 
 app.listen(port, () => {
-  console.log(`Bistro boss is sitting on port ${port}`);
+  console.log(`server ok `);
 });
 
 /**
