@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json());
 require("dotenv").config();
 
-// ? jot er function
+// ? jot er function || Middle ware
 const verifyJwt = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
