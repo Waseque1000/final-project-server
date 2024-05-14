@@ -226,6 +226,27 @@ async function run() {
       res.send(result);
     });
 
+    // ! admin dashboard
+    app.get("/admin-stats", verifyToken, verifyToken, async (req, res) => {
+      const users = await userCollection.estimatedDocumentCount();
+      const products = await menuCollection.estimatedDocumentCount();
+      const orders = await paymentCollection.estimatedDocumentCount();
+
+      // ! best way to get of a fleld is to use group and sum oparetors
+
+      const payments = await paymentCollection.find().toArray();
+      const revenue = payments.reduce((sum, payment) => sum + payment.price, 0);
+
+      res.send({
+        users,
+        products,
+        orders,
+        revenue,
+      });
+    });
+
+    app.get("/order-state");
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
